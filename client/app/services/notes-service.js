@@ -23,4 +23,14 @@ function NotesService($http) {
   self.get = function () {
     return self.notes;
   };
+
+  self.save = function (note) {
+    return $http.post('http://localhost:3000/notes', {
+      note: note
+    }).then(
+      function (resp) {
+        self.notes.unshift(resp.data.note);
+      }
+    );
+  };
 }

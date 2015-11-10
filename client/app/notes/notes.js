@@ -23,8 +23,16 @@
 
   NotesController['$inject'] = ['$state', '$scope', 'NotesService'];
   function NotesController($state, $scope, NotesService) {
+    $scope.note = {};
+
+    $scope.saveNote = function() {
+      NotesService.save($scope.note).then(function() {
+        $scope.note = {};
+      });
+    };
+
     NotesService.fetch().then(
-      function(resp) {
+      function() {
         $scope.notes = NotesService.get();
       }
     );

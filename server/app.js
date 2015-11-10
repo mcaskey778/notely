@@ -1,12 +1,18 @@
+require('dotenv').load();
+
 var express = require('express');
 var app = express();
 
-var db = require('./config/db');
-
 var Note = require('./models/note');
+
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 app.use( function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  //res.header('Access-Control-Allow-Methods', 'GET,post,put,delete');
   next();
 });
 
@@ -16,22 +22,19 @@ app.get('/notes', function(req, res) {
       res.json(notes);
     }
   );
-  /*
-  res.json([
-    {
-      title: "Hardcoded Note 1",
-      body_html:"Harcoded note body 1"
-    },
-    {
-      title: "Hardcoded Note 2",
-      body_html:"Harcoded note body 2"
-    },
-    {
-      title: "Hardcoded Note 3",
-      body_html:"Harcoded note body 3"
-    }
-  ]);
-  */
+});
+
+app.post('/notes', function(req, res) {
+  var note = new Note({
+    title: req.body.note.title,
+    body_html: req.body.note.body_html
+  });
+  note.save().then(function(data) {
+    res.json({
+      message: "Success",
+      note: data
+    });
+  });
 });
 
 app.listen(3000, function(){
