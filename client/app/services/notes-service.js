@@ -24,6 +24,15 @@ function NotesService($http) {
     return self.notes;
   };
 
+  self.findById = function (id) {
+    for(note in self.notes){
+      if(note._id === id){
+        return note;
+      }
+    }
+    return {};
+  };
+
   self.save = function (note) {
     return $http.post('http://localhost:3000/notes', {
       note: note

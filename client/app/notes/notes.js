@@ -36,6 +36,5 @@
         $scope.notes = NotesService.get();
       }
     );
-    $state.go('notes.form');
   }
 })();
